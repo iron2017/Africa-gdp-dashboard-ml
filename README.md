@@ -1,7 +1,24 @@
 ## Description
 
 // ...existing code...
+## Running the Server
 
+1. **Start the server**
+   ```bash
+   node server.js
+   ```
+2. **Server will run on**
+   `http://localhost:3000/`
+
+## Environment Variables
+
+Create a `.env` file in the server directory and add the following:
+
+```
+PORT=3000
+## Build
+
+For the ANgular app 
 ## Installation
 
 1. **Clone the repository**
@@ -36,30 +53,10 @@ Backend server for the Berry Free Angular Admin Template.
 2. **Install dependencies**
    ```bash
    npm install
-   ```
+## Testing  With Cypress
+yarn cypress open 
 
-## Running the Server
 
-1. **Start the server**
-   ```bash
-   npm start
-   ```
-2. **Server will run on**
-   `http://localhost:3000/`
-
-## Environment Variables
-
-Create a `.env` file in the server directory and add the following:
-
-```
-PORT=3000
-## Build
-
-To build the project for production:
-
-```bash
-yarn build --prod
-```
 
 ## License
 
