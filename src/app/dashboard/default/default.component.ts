@@ -9,10 +9,11 @@ import { BarChartComponent } from 'src/app/theme/shared/components/apexchart/bar
 import { MapVisualizationComponent } from '../../theme/shared/components/map-visualization/map-visualization.component';
 import { ChartDataService } from 'src/app/theme/shared/services/chart-data.service';
 import { TableVisualizationComponent } from '../../theme/shared/components/table-visualization/table-visualization.component';
+import { MLDashboardComponent } from '../../theme/shared/components/ml-dashboard/ml-dashboard.component';
 
 @Component({
   selector: 'app-default',
-  imports: [CommonModule, BarChartComponent, MapVisualizationComponent, TableVisualizationComponent],
+  imports: [CommonModule, BarChartComponent, MapVisualizationComponent, TableVisualizationComponent, MLDashboardComponent],
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.scss']
 })
