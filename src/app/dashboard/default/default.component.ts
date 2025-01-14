@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
 
 import { BarChartComponent } from 'src/app/theme/shared/components/apexchart/bar-chart/bar-chart.component';
 
-import { MapVisualizationComponent } from '../../../theme/shared/components/map-visualization/map-visualization.component';
+import { MapVisualizationComponent } from '../../theme/shared/components/map-visualization/map-visualization.component';
 import { ChartDataService } from 'src/app/theme/shared/services/chart-data.service';
-import { TableVisualizationComponent } from '../../../theme/shared/components/table-visualization/table-visualization.component';
+import { TableVisualizationComponent } from '../../theme/shared/components/table-visualization/table-visualization.component';
 
 @Component({
   selector: 'app-default',
