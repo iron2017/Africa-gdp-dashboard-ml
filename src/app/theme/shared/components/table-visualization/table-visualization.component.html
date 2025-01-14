@@ -1,0 +1,42 @@
+<div class="col-xl-12 col-md-12">
+  <div class="card overflow-hidden">
+    <div class="card-body bg-white text-dark" style="background-color: white">
+      <div class="p-3">
+        <div class="row mb-3">
+          <div class="col">
+            <label for="yearFilter" class="form-label">Year</label>
+            <select id="yearFilter" [(ngModel)]="yearFilter" class="form-select" style="border-radius: 0">
+              <option value="">All Years</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="countryFilter" class="form-label">Country</label>
+            <select id="countryFilter" [(ngModel)]="countryFilter" class="form-select" style="border-radius: 0">
+              <option value="">All Countries</option>
+              <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex fw-bold">
+          <div class="flex-fill" style="width: 25%">Year</div>
+          <div class="flex-fill" style="width: 25%">Country</div>
+          <div class="flex-fill" style="width: 25%">Population</div>
+          <div class="flex-fill" style="width: 25%">GDP (USD)</div>
+        </div>
+        <hr />
+        <div *ngFor="let record of displayedRecords" class="d-flex py-1 border-bottom">
+          <div class="flex-fill" style="width: 25%">{{ record.year }}</div>
+          <div class="flex-fill" style="width: 25%">{{ record.country }}</div>
+          <div class="flex-fill" style="width: 25%">{{ record.population }}</div>
+          <div class="flex-fill" style="width: 25%">{{ record.gdp }}</div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary me-2" [disabled]="currentPage === 1" (click)="prevPage()">Previous</button>
+        <span class="mx-2 fw-bold">{{ currentPage }} / {{ maxPage }}</span>
+        <button class="btn btn-primary ms-2" [disabled]="currentPage === maxPage" (click)="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>

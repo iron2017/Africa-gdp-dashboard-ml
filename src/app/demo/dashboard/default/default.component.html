@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-xl-6 col-md-6">
+    <div class="card earning-card bg-secondary-dark text-white overflow-hidden">
+      <span class="round secondary-round small"></span>
+      <span class="round secondary-round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avatar avatar-lg">
+              <i class="text-white ti ti-credit-card f-24"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <a type="button" class="avatar avatar-xs bg-secondary dropdown-toggle arrow-none" ngbDropdownToggle>
+                <i class="ti ti-dots"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <li><button class="dropdown-item" type="button">Import Card</button></li>
+                <li><button class="dropdown-item" type="button">Export</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-white d-block f-34 f-w-500 my-2">
+          {{ highestGDP | currency }}
+          <i class="ti ti-circle-arrow-up-right opacity-50"></i>
+        </span>
+        <p class="mb-0 opacity-50">Highest GDP: {{ highestGDPCountry }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6 col-md-6">
+    <div class="card earning-card bg-primary-dark text-white overflow-hidden">
+      <span class="round primary-round small"></span>
+      <span class="round primary-round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avatar avatar-lg">
+              <i class="text-white ti ti-users f-24"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <a type="button" class="avatar avatar-xs bg-primary dropdown-toggle arrow-none" ngbDropdownToggle>
+                <i class="ti ti-dots"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <li><button class="dropdown-item" type="button">Import Card</button></li>
+                <li><button class="dropdown-item" type="button">Export</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-white d-block f-34 f-w-500 my-2">
+          {{ highestPopulation | number }}
+          <i class="ti ti-circle-arrow-up-right opacity-50"></i>
+        </span>
+        <p class="mb-0 opacity-50">Highest Population: {{ highestPopulationCountry }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-12 col-md-12">
+    <app-bar-chart></app-bar-chart>
+  </div>
+  <div class="col-xl-12 col-md-12 col-lg-12 col-sm-12">
+    <app-map-visualization></app-map-visualization>
+  </div>
+
+  <div class="col-xl-12 col-md-12">
+    <app-table-visualization></app-table-visualization>
+  </div>
+
+  <div class="col-xl-6"></div>
+</div>
