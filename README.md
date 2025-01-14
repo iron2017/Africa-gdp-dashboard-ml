@@ -1,6 +1,12 @@
 ## Description
 
 // ...existing code...
+1. **Navigate to the server directory**
+   ```bash
+   cd src/server
+   2. **Install dependencies**
+   ```bash
+   npm install
 ## Running the Server
 
 1. **Start the server**
@@ -10,13 +16,6 @@
 2. **Server will run on**
    `http://localhost:3000/`
 
-## Environment Variables
-
-Create a `.env` file in the server directory and add the following:
-
-```
-PORT=3000
-## Build
 
 For the ANgular app 
 ## Installation
@@ -38,21 +37,13 @@ For the ANgular app
 
 1. **Start the development server**
    ```bash
-   yarn serve
+   yarn serve or ng serve or npm start 
    ```
 2. **Open your browser**
    Navigate to `http://localhost:4200/`
 Backend server for the Berry Free Angular Admin Template.
 
-## Installation
 
-1. **Navigate to the server directory**
-   ```bash
-   cd server
-   ```
-2. **Install dependencies**
-   ```bash
-   npm install
 ## Testing  With Cypress
 yarn cypress open 
 
