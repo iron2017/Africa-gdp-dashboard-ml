@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs';
+import { AppState } from '../state/app.state';
 import { CountryData } from '../repositories/data.repository';
 
 export interface AnalyticsResult {
@@ -11,28 +12,45 @@ export interface AnalyticsResult {
   providedIn: 'root'
 })
 export class AnalyticsService {
-  private analyticsSubject = new BehaviorSubject<AnalyticsResult>({
-    highestGDP: { value: 0, country: '' },
-    highestPopulation: { value: 0, country: '' }
-  });
+  readonly analytics$ = this.appState.countryData$.pipe(
+    tap((data) => console.log('Analytics received data:', data?.length)),
+    map((data) => this.calculateMetrics(data || [])),
+    tap((result) => console.log('Analytics calculated:', result)),
+    shareReplay(1)
+  );
 
-  calculateMetrics(data: CountryData[]): void {
-    const result = data.reduce(
+  readonly highestGDP$ = this.analytics$.pipe(
+    map((analytics) => analytics.highestGDP),
+    shareReplay(1)
+  );
+
+  readonly highestPopulation$ = this.analytics$.pipe(
+    map((analytics) => analytics.highestPopulation),
+    shareReplay(1)
+  );
+
+  constructor(private appState: AppState) {}
+
+  private calculateMetrics(data: CountryData[]): AnalyticsResult {
+    if (!data.length) {
+      return {
+        highestGDP: { value: 0, country: 'No data' },
+        highestPopulation: { value: 0, country: 'No data' }
+      };
+    }
+
+    return data.reduce(
       (acc, curr) => ({
-        highestGDP: curr.gdp > acc.highestGDP.value ? { value: curr.gdp, country: curr.country } : acc.highestGDP,
+        highestGDP: !isNaN(curr.gdp) && curr.gdp > acc.highestGDP.value ? { value: curr.gdp, country: curr.country } : acc.highestGDP,
         highestPopulation:
-          curr.population > acc.highestPopulation.value ? { value: curr.population, country: curr.country } : acc.highestPopulation
+          !isNaN(curr.population) && curr.population > acc.highestPopulation.value
+            ? { value: curr.population, country: curr.country }
+            : acc.highestPopulation
       }),
       {
         highestGDP: { value: 0, country: '' },
         highestPopulation: { value: 0, country: '' }
       }
     );
-
-    this.analyticsSubject.next(result);
-  }
-
-  getAnalytics(): Observable<AnalyticsResult> {
-    return this.analyticsSubject.asObservable();
   }
 }

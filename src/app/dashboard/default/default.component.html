@@ -1,66 +1,90 @@
 <div class="row">
-  <div class="col-xl-6 col-md-6">
-    <div class="card earning-card bg-secondary-dark text-white overflow-hidden">
-      <span class="round secondary-round small"></span>
-      <span class="round secondary-round big"></span>
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <div class="avatar avatar-lg">
-              <i class="text-white ti ti-credit-card f-24"></i>
-            </div>
-          </div>
-          <div class="col-auto">
-            <div class="btn-group" ngbDropdown>
-              <a type="button" class="avatar avatar-xs bg-secondary dropdown-toggle arrow-none" ngbDropdownToggle>
-                <i class="ti ti-dots"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                <li><button class="dropdown-item" type="button">Import Card</button></li>
-                <li><button class="dropdown-item" type="button">Export</button></li>
-              </ul>
-            </div>
+  <ng-container *ngIf="loading$ | async">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-        <span data-cy="highestGDP-value" class="text-white d-block f-34 f-w-500 my-2">
-          {{ analytics.highestGDP.value | currency }}
-          <i class="ti ti-circle-arrow-up-right opacity-50"></i>
-        </span>
-        <p data-cy="highestGDP-country" class="mb-0 opacity-50">Highest GDP: {{ analytics.highestGDP.country }}</p>
       </div>
     </div>
-  </div>
-  <div class="col-xl-6 col-md-6">
-    <div class="card earning-card bg-primary-dark text-white overflow-hidden">
-      <span class="round primary-round small"></span>
-      <span class="round primary-round big"></span>
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <div class="avatar avatar-lg">
-              <i class="text-white ti ti-users f-24"></i>
-            </div>
-          </div>
-          <div class="col-auto">
-            <div class="btn-group" ngbDropdown>
-              <a type="button" class="avatar avatar-xs bg-primary dropdown-toggle arrow-none" ngbDropdownToggle>
-                <i class="ti ti-dots"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                <li><button class="dropdown-item" type="button">Import Card</button></li>
-                <li><button class="dropdown-item" type="button">Export</button></li>
-              </ul>
-            </div>
-          </div>
+  </ng-container>
+
+  <ng-container *ngIf="error$ | async as error">
+    <div class="col-12">
+      <div class="card bg-danger text-white">
+        <div class="card-body">
+          {{ error }}
         </div>
-        <span data-cy="highestPopulation-value" class="text-white d-block f-34 f-w-500 my-2">
-          {{ analytics.highestPopulation.value | number }}
-          <i class="ti ti-circle-arrow-up-right opacity-50"></i>
-        </span>
-        <p data-cy="highestPopulation-country" class="mb-0 opacity-50">Highest Population: {{ analytics.highestPopulation.country }}</p>
       </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-container *ngIf="analytics$ | async as analytics">
+    <div class="col-xl-6 col-md-6">
+      <div class="card earning-card bg-secondary-dark text-white overflow-hidden">
+        <span class="round secondary-round small"></span>
+        <span class="round secondary-round big"></span>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="avatar avatar-lg">
+                <i class="text-white ti ti-credit-card f-24"></i>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="btn-group" ngbDropdown>
+                <a type="button" class="avatar avatar-xs bg-secondary dropdown-toggle arrow-none" ngbDropdownToggle>
+                  <i class="ti ti-dots"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                  <li><button class="dropdown-item" type="button">Import Card</button></li>
+                  <li><button class="dropdown-item" type="button">Export</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <span data-cy="highestGDP-value" class="text-white d-block f-34 f-w-500 my-2">
+            {{ analytics.highestGDP.value | currency }}
+            <i class="ti ti-circle-arrow-up-right opacity-50"></i>
+          </span>
+          <p data-cy="highestGDP-country" class="mb-0 opacity-50">Highest GDP: {{ analytics.highestGDP.country }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-6">
+      <div class="card earning-card bg-primary-dark text-white overflow-hidden">
+        <span class="round primary-round small"></span>
+        <span class="round primary-round big"></span>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="avatar avatar-lg">
+                <i class="text-white ti ti-users f-24"></i>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="btn-group" ngbDropdown>
+                <a type="button" class="avatar avatar-xs bg-primary dropdown-toggle arrow-none" ngbDropdownToggle>
+                  <i class="ti ti-dots"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                  <li><button class="dropdown-item" type="button">Import Card</button></li>
+                  <li><button class="dropdown-item" type="button">Export</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <span data-cy="highestPopulation-value" class="text-white d-block f-34 f-w-500 my-2">
+            {{ analytics.highestPopulation.value | number }}
+            <i class="ti ti-circle-arrow-up-right opacity-50"></i>
+          </span>
+          <p data-cy="highestPopulation-country" class="mb-0 opacity-50">Highest Population: {{ analytics.highestPopulation.country }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 
   <div class="col-xl-12 col-md-12">
     <app-bar-chart></app-bar-chart>

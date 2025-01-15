@@ -1,6 +1,7 @@
 // Angular Import
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // project import
 
@@ -11,45 +12,47 @@ import { MapVisualizationComponent } from '../../theme/shared/components/map-vis
 import { TableVisualizationComponent } from '../../theme/shared/components/table-visualization/table-visualization.component';
 import { MLDashboardComponent } from '../../theme/shared/components/ml-dashboard/ml-dashboard.component';
 import { DataRepository } from '../../core/repositories/data.repository';
-import { AnalyticsService, AnalyticsResult } from '../../core/services/analytics.service';
-import { Subject, takeUntil } from 'rxjs';
+import { AnalyticsService } from '../../core/services/analytics.service';
+import { AppState } from '../../core/state/app.state';
+import { filter } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-default',
-  imports: [CommonModule, BarChartComponent, MapVisualizationComponent, TableVisualizationComponent, MLDashboardComponent],
+  standalone: true,
+  imports: [CommonModule, NgbModule, BarChartComponent, MapVisualizationComponent, TableVisualizationComponent, MLDashboardComponent],
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.scss']
 })
-export class DefaultComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-  analytics: AnalyticsResult = {
-    highestGDP: { value: 0, country: '' },
-    highestPopulation: { value: 0, country: '' }
-  };
+export class DefaultComponent implements OnInit {
+  readonly loading$ = this.appState.loading$;
+  readonly error$ = this.appState.error$;
+  readonly analytics$ = this.analyticsService.analytics$.pipe(tap((data) => console.log('Analytics Data:', data)));
 
   constructor(
     private dataRepository: DataRepository,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private appState: AppState
   ) {}
 
   ngOnInit(): void {
+    this.appState.setLoading(true);
+
     this.dataRepository
       .getCountryData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.analyticsService.calculateMetrics(data);
+      .pipe(
+        tap((data) => console.log('Raw Data:', data)),
+        filter((data) => data.length > 0)
+      )
+      .subscribe({
+        next: (data) => {
+          console.log('Processing data:', data.length, 'records');
+          this.appState.updateData(data);
+        },
+        error: (error) => {
+          console.error('Data fetch error:', error);
+          this.appState.setError(error.message);
+        }
       });
-
-    this.analyticsService
-      .getAnalytics()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((analytics) => {
-        this.analytics = analytics;
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,7 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
@@ -9,12 +9,12 @@ const PORT = 3000;
 app.use(cors());
 
 // API endpoint to serve CSV data
-app.get("/api/data", (req, res) => {
-  const filePath = path.join(__dirname, "Data_Africa.csv");
-  fs.readFile(filePath, "utf8", (err, data) => {
+app.get('/api/data', (req, res) => {
+  const filePath = path.join(__dirname, 'Data_Africa.csv');
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      console.error("Error reading the file:", err);
-      return res.status(500).send("Internal Server Error");
+      console.error('Error reading the file:', err);
+      return res.status(500).send('Internal Server Error');
     }
     res.send(data);
   });

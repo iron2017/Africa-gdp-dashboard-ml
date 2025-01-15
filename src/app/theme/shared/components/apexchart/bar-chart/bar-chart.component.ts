@@ -1,10 +1,6 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
-import { ChartConfigService } from '../../../../../core/services/chart-config.service';
-import { ChartDataTransformerService } from '../../../../../core/services/chart-data-transformer.service';
 import { ChartDataService } from '../../../services/chart-data.service';
-import { GroupedData, ViewMode } from '../../../../../core/models/chart.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -23,6 +19,7 @@ import { FormsModule } from '@angular/forms';
       </div>
       <div class="card-body">
         <apx-chart
+          #chart
           [series]="chartOptions.series"
           [chart]="chartOptions.chart"
           [xaxis]="chartOptions.xaxis"
@@ -34,33 +31,59 @@ import { FormsModule } from '@angular/forms';
     </div>
   `
 })
-export class BarChartComponent implements OnInit, OnDestroy {
+export class BarChartComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
-  private destroy$ = new Subject<void>();
   chartOptions: Partial<ApexOptions>;
-  viewMode: ViewMode = 'country';
-  private groupedData!: GroupedData;
+  viewMode: 'year' | 'country' | 'continent' = 'country';
+  private groupedData: Record<string, Record<string, { population: number; gdp: number }>> = {
+    byYear: {},
+    byCountry: {},
+    byContinent: {}
+  };
 
-  constructor(
-    private chartDataService: ChartDataService,
-    private configService: ChartConfigService,
-    private transformer: ChartDataTransformerService
-  ) {
-    this.chartOptions = this.configService.getBaseConfig();
+  constructor(private chartDataService: ChartDataService) {
+    this.chartOptions = {
+      series: [],
+      dataLabels: { enabled: false },
+      chart: {
+        type: 'line',
+        height: 480,
+        toolbar: { show: true },
+        background: 'transparent'
+      },
+      colors: ['#d3eafd', '#2196f3'],
+      xaxis: { categories: [] }
+    };
   }
 
   ngOnInit() {
-    this.chartDataService
-      .getChartData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((csvData) => {
-        this.groupedData = this.transformer.transformData(csvData);
-        this.updateChartData();
-      });
+    this.chartDataService.getChartData().subscribe((csvData) => {
+      this.processData(csvData);
+      this.updateChartData();
+    });
+  }
+
+  private processData(csvData: string) {
+    const [, ...lines] = csvData.split('\n');
+    lines.forEach((line) => {
+      const [, year, country, continent, population, gdp] = line.split(',');
+      this.updateGroup('byYear', year, Number(population), Number(gdp));
+      this.updateGroup('byCountry', country, Number(population), Number(gdp));
+      this.updateGroup('byContinent', continent, Number(population), Number(gdp));
+    });
+  }
+
+  private updateGroup(group: string, key: string, population: number, gdp: number) {
+    if (!this.groupedData[group][key]) {
+      this.groupedData[group][key] = { population: 0, gdp: 0 };
+    }
+    this.groupedData[group][key].population += population || 0;
+    this.groupedData[group][key].gdp += gdp || 0;
   }
 
   updateChartData() {
-    const data = this.groupedData[`by${this.viewMode.charAt(0).toUpperCase()}${this.viewMode.slice(1)}`];
+    const currentGroup = `by${this.viewMode.charAt(0).toUpperCase()}${this.viewMode.slice(1)}`;
+    const data = this.groupedData[currentGroup];
     const categories = Object.keys(data).sort();
 
     this.chartOptions = {
@@ -77,10 +100,5 @@ export class BarChartComponent implements OnInit, OnDestroy {
         }
       ]
     };
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
