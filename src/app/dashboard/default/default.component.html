@@ -23,10 +23,10 @@
           </div>
         </div>
         <span data-cy="highestGDP-value" class="text-white d-block f-34 f-w-500 my-2">
-          {{ highestGDP | currency }}
+          {{ analytics.highestGDP.value | currency }}
           <i class="ti ti-circle-arrow-up-right opacity-50"></i>
         </span>
-        <p data-cy="highestGDP-country" class="mb-0 opacity-50">Highest GDP: {{ highestGDPCountry }}</p>
+        <p data-cy="highestGDP-country" class="mb-0 opacity-50">Highest GDP: {{ analytics.highestGDP.country }}</p>
       </div>
     </div>
   </div>
@@ -54,10 +54,10 @@
           </div>
         </div>
         <span data-cy="highestPopulation-value" class="text-white d-block f-34 f-w-500 my-2">
-          {{ highestPopulation | number }}
+          {{ analytics.highestPopulation.value | number }}
           <i class="ti ti-circle-arrow-up-right opacity-50"></i>
         </span>
-        <p data-cy="highestPopulation-country" class="mb-0 opacity-50">Highest Population: {{ highestPopulationCountry }}</p>
+        <p data-cy="highestPopulation-country" class="mb-0 opacity-50">Highest Population: {{ analytics.highestPopulation.country }}</p>
       </div>
     </div>
   </div>
